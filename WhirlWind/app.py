@@ -1,21 +1,64 @@
+import functools
+import typing
+import os
+import mimetypes
+from wsgiref import simple_server, util
+
 class terminalEffects:
     FINE = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
-class App:
-    def __init__(self, host=None, port=None, secretKey=None):
+class App(object):
+    def __init__(self, secretKey=None):
+        self.secretKey = str(secretKey)
+        self._routes = dict()
+
+    def run(self, host=None, port=None):
         if not host and not port:
             print(terminalEffects.FAIL + '[-] No host and port were spesified.' + terminalEffects.ENDC)
             exit()
         if not host:
-            print(terminalEffects.FAIL + '[-] No host was spesified.' + terminalEffects.ENDC)
+            print(terminalEffects.FAIL + '[-] No host was specified.' + terminalEffects.ENDC)
             exit()
         if not port:
-            print(terminalEffects.FAIL + '[-] No port was spesified.' + terminalEffects.ENDC)
+            print(terminalEffects.FAIL + '[-] No port was specified.' + terminalEffects.ENDC)
             exit()
-        self.host = host
-        self.port = port
-        self.secretKey = str(secretKey)
-        print(terminalEffects.FINE + '[+] Development server running on http://' + host + ':' + port + terminalEffects.ENDC)
+
+        assert self._routes.get("/") is not None, "Cannot find index route"
+
+        with simple_server.make_server(host, port, self.appHandler) as server:
+            print(terminalEffects.FINE + '[+] Development server running on http://' + host + ':' + str(port) + terminalEffects.ENDC)
+            server.serve_forever()
+
+    # need to make a route creator and start the server in there
+
+    def path(self, path: str) -> None:
+        route = path.lower()
+
+        if not route.startswith('/'):
+            raise ValueError('Route must start with a slash')
+        if self._routes.get(route, False):
+            raise ValueError('This route already exists')
+
+        def inner(func):
+            self._routes.update({route: func})
+
+            return func
+        return inner
+
+    def appHandler(self, environ, respond):
+        fn = environ["PATH_INFO"]
+
+        routeExists = self._routes.get(fn)
+
+        if routeExists:
+            headers = [('Content-type', 'text/html; charset=utf-8')]  # HTTP Headers
+            status = '200 OK'  # HTTP Status
+            respond(status, headers)
+
+            return routeExists()
+
+        respond('404 Not Found', [('Content-Type', 'text/plain')])
+        return [b'not found']
