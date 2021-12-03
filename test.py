@@ -1,17 +1,26 @@
-from WhirlWind import App
+from WhirlWind import App, responses
 ## Imports ^
 
-myApp = App()
+
+app = App(staticFolder="static")
 ## Initial app setup ^
 
-@myApp.path('/')
+@app.path('/')
 def index():
-    return [b"Visit <a href='/test'>me</a>!"]
+    return responses.TemplateResponse("index.html", variables={"hello": "hi"})
 
-@myApp.path("/test")
-def test():
-    return [b"Hello, World!"]
-## Created a route, on the path `/`, that returns anything in the function return ^
+@app.path('/html')
+def html():
+    return responses.HtmlResponse("<a href='/'>Link Back To Home</a>")
 
-myApp.run("127.0.0.1", 5000)
-## Running the webserver ^
+@app.path('/plain-text')
+def plainText():
+    return responses.PlainTextResponse("Hello <a href='/'>Link Back To Home</a> lmao")
+
+@app.path('/file')
+def plainText():
+    return responses.FileResponse("test.json")
+
+if __name__ == "__main__":
+    app.run("localhost", 5000)
+    ## Running the webserver ^
