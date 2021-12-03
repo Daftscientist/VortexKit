@@ -6,21 +6,13 @@ app = App(staticFolder="static")
 ## Initial app setup ^
 
 @app.path('/')
+## Creating a route ^
 def index():
-    return responses.TemplateResponse("index.html", variables={"hello": "hi"})
-
-@app.path('/html')
-def html():
+## Defining the function ^
     return responses.HtmlResponse("<a href='/'>Link Back To Home</a>")
-
-@app.path('/plain-text')
-def plainText():
-    return responses.PlainTextResponse("Hello <a href='/'>Link Back To Home</a> lmao")
-
-@app.path('/file')
-def plainText():
-    return responses.FileResponse("test.json")
+    ## Returning your chosen response ^
 
 if __name__ == "__main__":
+## To check the file is ran ^
     app.run("localhost", 5000)
     ## Running the webserver ^
