@@ -11,9 +11,10 @@ class terminalEffects:
     ENDC = '\033[0m'
 
 class App(object):
-    def __init__(self, secretKey=None):
+    def __init__(self, staticFolder, secretKey=None):
         self.secretKey = str(secretKey)
         self._routes = dict()
+        self.staticFolder = str(staticFolder)
 
     def run(self, host=None, port=None):
         if not host and not port:
@@ -32,7 +33,6 @@ class App(object):
             print(terminalEffects.FINE + '[+] Development server running on http://' + host + ':' + str(port) + terminalEffects.ENDC)
             server.serve_forever()
 
-    # need to make a route creator and start the server in there
 
     def path(self, path: str) -> None:
         route = path.lower()
@@ -43,8 +43,7 @@ class App(object):
             raise ValueError('This route already exists')
 
         def inner(func):
-            self._routes.update({route: func})
-
+            self._routes.update({ route: [ func()[0], func()[1] ] })
             return func
         return inner
 
@@ -54,11 +53,11 @@ class App(object):
         routeExists = self._routes.get(fn)
 
         if routeExists:
-            headers = [('Content-type', 'text/html; charset=utf-8')]  # HTTP Headers
+            headers = [('Content-type', routeExists[1])]  # HTTP Headers
             status = '200 OK'  # HTTP Status
             respond(status, headers)
-
-            return routeExists()
+            stuff = routeExists[0]
+            return [stuff] # returns the content to show on the path from the func
 
         respond('404 Not Found', [('Content-Type', 'text/plain')])
-        return [b'not found']
+        return [b'not found'] # returns the content on the path if it is 404
