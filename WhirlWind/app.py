@@ -4,7 +4,7 @@ import os
 import mimetypes
 from wsgiref import simple_server, util
 
-class terminalEffects:
+class TerminalEffects:
     FINE = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
