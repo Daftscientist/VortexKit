@@ -8,7 +8,7 @@ WhirlWind is a lightweight Python web framework for building web applications qu
 You can install WhirlWind using pip:
 
 ```
-pip install WhirlWind
+pip install https://github.com/Daftscientist/WhirlWind.git
 ```
 
 ## Usage
