@@ -1,18 +1,22 @@
-from WhirlWind import App, responses
-## Imports ^
+from WhirlWind import App, PlainTextResponse, HtmlResponse, JSONResponse, Request
 
+app = App()
 
-app = App(staticFolder="static")
-## Initial app setup ^
+@app.route("/")
+def home(req: Request):
+    return PlainTextResponse(f"Hello, World! {req.cookies}")
 
-@app.path('/')
-## Creating a route ^
-def index():
-## Defining the function ^
-    return responses.HtmlResponse("<a href='/'>Link Back To Home</a>")
-    ## Returning your chosen response ^
+@app.route("/about")
+def about(req: Request):
+    return HtmlResponse(f"<h1>About</h1> {req.query_params}")
+
+@app.route("/json")
+def json():
+    return JSONResponse({"message": "Hello, World!"})
+
+@app.route('/get-req-data')
+def get_req_data(req: Request):
+    return JSONResponse(req.__to_json__())
 
 if __name__ == "__main__":
-## To check the file is ran ^
-    app.run("localhost", 5000)
-    ## Running the webserver ^
+    app.run("localhost", 8080)
