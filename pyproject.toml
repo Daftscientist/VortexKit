@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whirl_wind"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lightweight, customizable WSGI framework designed to handle web requests with ease and flexibility."
 authors = ["dafty144 <contact@leojohnston.tech>"]
 readme = "README.md"
