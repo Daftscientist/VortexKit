@@ -11,8 +11,8 @@ def about(req: Request):
     return HtmlResponse(f"<h1>About</h1> {req.query_params}")
 
 @app.route("/json")
-def json():
-    return JSONResponse({"message": "Hello, World!"})
+def json(req):
+    return JSONResponse({"message": "Hello, World! ", "form-data": req.body})
 
 @app.route('/get-req-data')
 def get_req_data(req: Request):
