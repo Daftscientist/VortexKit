@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "WhirlWind"
+name = "whirl_wind"
 version = "0.1.0"
 description = "A lightweight, customizable WSGI framework designed to handle web requests with ease and flexibility."
 authors = ["dafty144 <contact@leojohnston.tech>"]

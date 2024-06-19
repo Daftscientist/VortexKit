@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/WhirlWind
+      url: https://pypi.org/p/whirl_wind
     permissions:
       id-token: write
     steps:

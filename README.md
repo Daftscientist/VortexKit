@@ -16,7 +16,7 @@ WhirlWind is a lightweight, customizable WSGI framework designed to handle web r
 Install WhirlWind via pip:
 
 ```bash
-pip install WhirlWind
+pip install whirl_wind
 ```
 
 ### 🔧 Usage
