@@ -6,7 +6,7 @@ from .request import ParseRequestInput
 
 class App(object):
     """
-        The initial class that is used to create a new WhirlWind app.
+        The initial class that is used to create a new vortexkit app.
     """
     def __init__(self) -> None:
         self._routes = dict()
@@ -89,7 +89,7 @@ class App(object):
 
     def run(self, host: str, port: int) -> None:
         """
-            Runs the WhirlWind app on the specified host and port.
+            Runs the vortexkit app on the specified host and port.
 
             Args:
                 host (str): The host to run the app on.

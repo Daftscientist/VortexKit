@@ -1,4 +1,4 @@
-from WhirlWind import App, PlainTextResponse, HtmlResponse, JSONResponse, Request
+from vortexkit import App, PlainTextResponse, HtmlResponse, JSONResponse, Request
 
 app = App()
 

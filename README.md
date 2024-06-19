@@ -16,7 +16,7 @@ VortexKit is a lightweight, customizable WSGI framework designed to handle web r
 Install VortexKit via pip:
 
 ```bash
-pip install VortexKit
+pip install vortexkit
 ```
 
 ### 🔧 Usage
@@ -24,7 +24,7 @@ pip install VortexKit
 Create a simple application with VortexKit:
 
 ```python
-from VortexKit import App, PlainTextResponse, Request
+from vortexkit import App, PlainTextResponse, Request
 
 app = App()
 
@@ -49,7 +49,7 @@ python app.py
 VortexKit can handle various content types including JSON, XML, and multipart form data.
 
 ```python
-from VortexKit import App, JSONResponse, Request
+from vortexkit import App, JSONResponse, Request
 
 app = App()
 
