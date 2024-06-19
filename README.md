@@ -1,6 +1,6 @@
-# 🌪️ WhirlWind
+# 🌪️ VortexKit
 
-WhirlWind is a lightweight, customizable WSGI framework designed to handle web requests with ease and flexibility. It's perfect for building web applications quickly and efficiently. 🚀
+VortexKit is a lightweight, customizable WSGI framework designed to handle web requests with ease and flexibility. It's perfect for building web applications quickly and efficiently. 🚀
 
 ## 🌟 Features
 
@@ -13,18 +13,18 @@ WhirlWind is a lightweight, customizable WSGI framework designed to handle web r
 
 ### 📦 Installation
 
-Install WhirlWind via pip:
+Install VortexKit via pip:
 
 ```bash
-pip install whirl_wind
+pip install VortexKit
 ```
 
 ### 🔧 Usage
 
-Create a simple application with WhirlWind:
+Create a simple application with VortexKit:
 
 ```python
-from WhirlWind import App, PlainTextResponse, Request
+from VortexKit import App, PlainTextResponse, Request
 
 app = App()
 
@@ -46,10 +46,10 @@ python app.py
 
 #### Handling Different Content Types
 
-WhirlWind can handle various content types including JSON, XML, and multipart form data.
+VortexKit can handle various content types including JSON, XML, and multipart form data.
 
 ```python
-from WhirlWind import App, JSONResponse, Request
+from VortexKit import App, JSONResponse, Request
 
 app = App()
 
@@ -66,16 +66,16 @@ if __name__ == "__main__":
 
 ### 📖 Documentation
 
-For detailed documentation, visit the [WhirlWind Docs](https://github.com/daftscientist/whirlwind/wiki).
+For detailed documentation, visit the [VortexKit Docs](https://github.com/daftscientist/VortexKit/wiki).
 
 ## 💻 Contributing
 
-We welcome contributions! Please see our [CONTRIBUTING.md](https://github.com/daftscientist/whirlwind/blob/main/CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [CONTRIBUTING.md](https://github.com/daftscientist/VortexKit/blob/main/CONTRIBUTING.md) for details.
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/daftscientist/whirlwind/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/daftscientist/VortexKit/blob/main/LICENSE) file for details.
 
 ## 🎉 Acknowledgements
 
-Thanks to all contributors and supporters of WhirlWind. Your efforts make this project better every day. 🌟
+Thanks to all contributors and supporters of VortexKit. Your efforts make this project better every day. 🌟
