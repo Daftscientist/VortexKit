@@ -107,6 +107,8 @@ class App(object):
             response.status_code = response.status_code.value
         
         start_response(response.status_code, [("Content-type", response.content_type)])
+        if type(response.content) is bytes:
+            return [response.content]
         return [response.content.encode('utf-8')]
 
     def add_route(self, path: str, func: callable) -> None:

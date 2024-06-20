@@ -129,12 +129,12 @@ class FileResponse(BaseResponse):
     def __post_init__(self):
         super().__init__()  # Initialize BaseResponse
 
-        in_file = open(self.filePath, "rb")
+        in_file = open(self.file_path, "rb")
         data = in_file.read()
         if data == None:
             raise FileNotFoundError("File was not found.") 
         else:
-            self.content_type = mimetypes.guess_type(self.filePath)[0]
+            self.content_type = mimetypes.guess_type(self.file_path)[0]
             self.content = data
     
 @dataclass
