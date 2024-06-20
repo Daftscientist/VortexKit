@@ -59,7 +59,6 @@ class App(object):
         
 
         route = self._routes.get(current_request.path, False)
-        print(route)
         if route:
             try:
                 response = route[0](current_request)

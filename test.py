@@ -1,22 +1,40 @@
-from vortexkit import App, PlainTextResponse, HtmlResponse, JSONResponse, Request
+from vortexkit import App, Request, JSONResponse
 
 app = App()
 
 @app.route("/")
-def home(req: Request):
-    return PlainTextResponse(f"Hello, World! {req.cookies}")
+def index(request: Request):
+    return JSONResponse({"message": "Hello, world!"})
 
-@app.route("/about")
-def about(req: Request):
-    return HtmlResponse(f"<h1>About</h1> {req.query_params}")
+@app.route("/interaction-callback")
+def interaction_callback(request: Request):
+    if not request.method == "POST":
+        return JSONResponse({"error": "Method not allowed"}, status_code="405 Method Not Allowed")
+    
+    if not type(request.body) == dict:
+        return JSONResponse({"error": "Request body must be JSON"}, status_code="400 Bad Request")
+    
+    if request.body["type"] not in range(1,10):
+        return JSONResponse({"error": "Invalid interaction type"}, status_code="400 Bad Request")
+    
+    if request.body["type"] == 1:
+        return JSONResponse({
+            "type": 1
+        })
 
-@app.route("/json")
-def json(req):
-    return JSONResponse({"message": "Hello, World! ", "form-data": req.body})
+    else:
+        return JSONResponse({
+            "type": 4,
+            "data": {
+                "tts": False,
+                "content": "Congrats on sending your command!",
+                "embeds": [],
+                "allowed_mentions": { "parse": [] }
+            }
+        })
 
-@app.route('/get-req-data')
-def get_req_data(req: Request):
-    return JSONResponse(req.__to_json__())
-
-if __name__ == "__main__":
-    app.run("localhost", 8080)
+if __name__ == '__main__':
+    app.run(
+        host="localhost",
+        port=8000,
+    )
