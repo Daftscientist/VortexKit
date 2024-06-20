@@ -39,7 +39,7 @@ class App(object):
         """
 
         def inner(func, *args, **kwargs):
-            if not path.startswith("/"):
+            if not path.startswith("/") and not path == "*":
                 raise ValueError("Path must start with a /")
             if self._routes.get(path):
                 raise ValueError("Route already exists")
@@ -82,7 +82,7 @@ class App(object):
 
         if not route:
             if self._routes.get("*"):
-                route = route["*"]
+                route = self._routes["*"]
             else:
                 route = self.errors.get("404")
                 if not route:
