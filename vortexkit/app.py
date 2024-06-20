@@ -1,4 +1,5 @@
 import os
+import threading
 from wsgiref import simple_server
 from urllib.parse import parse_qs
 from .responses import FileResponse
@@ -12,12 +13,8 @@ class App(object):
     def __init__(self) -> None:
         self._routes = dict()
         self.errors = dict()
-        """
-            {
-                "/": [function, content_type],
-            }
-        """
-    
+        self.context = threading.local()
+
     def serve_static(self, path: str, folder: str) -> None:
         """
             Serves static files from a specified folder.
@@ -77,7 +74,7 @@ class App(object):
             start_response (callable): The WSGI start_response.
         """
     
-        current_request = ParseRequestInput(environ).parse()
+        current_request = ParseRequestInput(environ, self.context).parse()
         route = self._routes.get(current_request.path, False)
 
         if not route:

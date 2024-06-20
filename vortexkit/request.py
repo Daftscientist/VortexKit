@@ -6,7 +6,17 @@ import xml.etree.ElementTree as ET
 from io import BytesIO
 
 @dataclass
+class App:
+    context: any
+
+    def __json__(self):
+        return {
+            "context": self.context.__dict__
+        }
+
+@dataclass
 class Request:
+    app: App
     path: str
     method: str
     query_params: dict
@@ -27,6 +37,7 @@ class Request:
 
     def __to_json__(self):
         return {
+            "app": self.app.__json__(),
             "path": self.path,
             "method": self.method,
             "query_params": self.query_params,
@@ -50,8 +61,9 @@ class Request:
         return f"Request(path={self.path}, method={self.method}, query_params={self.query_params}, body={self.body}, content_type={self.content_type}, headers={self.headers}, cookies={self.cookies}, real_ip={self.real_ip}, user_agent={self.user_agent}, accept={self.accept}, remote_host={self.remote_host}, remote_addr={self.remote_addr}, remote_port={self.remote_port}, server_name={self.server_name}, server_port={self.server_port}, server_protocol={self.server_protocol}, server_software={self.server_software})"
 
 class ParseRequestInput:
-    def __init__(self, environ_data: dict):
+    def __init__(self, environ_data: dict, context):
         self.environ_data = environ_data
+        self.context = context
 
     def _fetch_body(self):
         content_length_str = self.environ_data.get('CONTENT_LENGTH', '0')
@@ -100,6 +112,7 @@ class ParseRequestInput:
         parsed_body = self._parse_body(body)
 
         current_request = Request(
+            app=App(self.context),
             path=self.environ_data.get("PATH_INFO"),
             method=self.environ_data.get("REQUEST_METHOD"),
             query_params=parse_qs(self.environ_data.get("QUERY_STRING", "")),
