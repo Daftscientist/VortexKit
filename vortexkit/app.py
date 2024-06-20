@@ -14,6 +14,20 @@ class App(object):
         self._routes = dict()
         self.errors = dict()
         self.context = threading.local()
+        self.middleware = []
+
+    def register_middleware(self, middleware: callable) -> None:
+        """
+            Registers a middleware class to the app. Said class should contain a 'process_request' method.
+
+            Args:
+                middleware (callable): The middleware class to be registered.
+        """
+
+        if not hasattr(middleware, "process_request"):
+            raise ValueError("Middleware must have a 'process_request' method")
+
+        self.middleware.append(middleware)
 
     def serve_static(self, path: str, folder: str) -> None:
         """
@@ -75,7 +89,12 @@ class App(object):
         """
     
         current_request = ParseRequestInput(environ, self.context).parse()
+        print(current_request.__dict__())
         route = self._routes.get(current_request.path, False)
+
+        ## invoke middleware and pass current request
+        for middleware in self.middleware:
+            middleware.process_request(current_request)
 
         if not route:
             if self._routes.get("*"):
@@ -94,6 +113,8 @@ class App(object):
                     response.status_code = response.status_code.value
                 
                 start_response(response.status_code, [("Content-type", response.content_type)])
+                if type(response.content) is bytes:
+                    return [response.content]
                 return [response.content.encode('utf-8')]
         
         try:

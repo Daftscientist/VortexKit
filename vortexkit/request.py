@@ -35,7 +35,7 @@ class Request:
     server_protocol: str = None
     server_software: str = None
 
-    def __to_json__(self):
+    def __dict__(self):
         return {
             "app": self.app.__json__(),
             "path": self.path,
