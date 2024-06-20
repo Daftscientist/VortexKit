@@ -3,6 +3,7 @@ from wsgiref import simple_server
 from urllib.parse import parse_qs
 from .responses import FileResponse
 from .request import ParseRequestInput
+from .enums import StatusCode
 
 class App(object):
     """
@@ -10,6 +11,7 @@ class App(object):
     """
     def __init__(self) -> None:
         self._routes = dict()
+        self.errors = dict()
         """
             {
                 "/": [function, content_type],
@@ -45,6 +47,26 @@ class App(object):
             return func
         return inner
 
+    def error_handler(self, status_code: int|StatusCode) -> None:
+        """
+            A decorator that creates a new route.
+
+            Args:
+                path (str): The path of the route.
+        """
+
+        if type(status_code) is StatusCode:
+            status_code = status_code.value
+        
+        if type(status_code) is str:
+            status_code = status_code.split(" ")[0]
+
+        def inner(func, *args, **kwargs):
+            if self.errors.get(status_code):
+                raise ValueError("Route already exists")
+            self.errors[status_code] = [func]
+            return func
+        return inner
 
     def handler(self, environ: dict, start_response: callable) -> list:
         """
@@ -54,22 +76,38 @@ class App(object):
             environ (dict): The WSGI environ.
             start_response (callable): The WSGI start_response.
         """
-        
+    
         current_request = ParseRequestInput(environ).parse()
-        
-
         route = self._routes.get(current_request.path, False)
-        if route:
-            try:
-                response = route[0](current_request)
-            except TypeError:
-                response = route[0]()
-            start_response(response.status_code, [("Content-type", response.content_type)])
-            return [response.content.encode('utf-8')]
-        else:
-            start_response("404 Not Found", [("Content-type", "text/html")])
-            return [b"<h1>404 Not Found</h1>"]
 
+        if not route:
+            if self._routes.get("*"):
+                route = route["*"]
+            else:
+                route = self.errors.get("404")
+                if not route:
+                    start_response("404 Not Found", [("Content-type", "text/html")])
+                    return [b"<h1>404 Not Found</h1>"]
+                
+                try:
+                    response = route[0](current_request)
+                except TypeError:
+                    response = route[0]()
+                if type(response.status_code) is StatusCode:
+                    response.status_code = response.status_code.value
+                
+                start_response(response.status_code, [("Content-type", response.content_type)])
+                return [response.content.encode('utf-8')]
+        
+        try:
+            response = route[0](current_request)
+        except TypeError:
+            response = route[0]()
+        if type(response.status_code) is StatusCode:
+            response.status_code = response.status_code.value
+        
+        start_response(response.status_code, [("Content-type", response.content_type)])
+        return [response.content.encode('utf-8')]
 
     def add_route(self, path: str, func: callable) -> None:
         """
@@ -85,6 +123,24 @@ class App(object):
             raise ValueError("Route already exists")
 
         self._routes[path] = [func]
+    
+    def add_error_handler(self, status_code: str|StatusCode, func: callable) -> None:
+        """
+            Adds a new error handler to the app.
+
+            Args:
+                status_code (str): The status code of the error.
+                func (callable): The function to be called when the error occurs.
+        """
+
+        if type(status_code) is StatusCode:
+            status_code = status_code.value
+        
+        if type(status_code) is str:
+            status_code = status_code.split(" ")[0]
+
+        if not self.errors.get(status_code):
+            self.errors[status_code] = [func]
 
     def run(self, host: str, port: int) -> None:
         """
