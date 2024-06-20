@@ -64,6 +64,24 @@ if __name__ == "__main__":
     app.run("localhost", 8080)
 ```
 
+#### Manually registering routes
+
+VortexKit allows dynamic route definitions tailored to your application's specific needs, empowering precise control and flexibility.
+
+```python
+from vortexkit import App, PlainTextResponse, Request
+
+app = App()
+
+def homeRoute(request: Request):
+    return PlainTextResponse("Hello world!")
+
+app.add_route("/", homeRoute)
+
+if __name__ == "__main__":
+    app.run("localhost", 8080)
+```
+
 ### 📖 Documentation
 
 For detailed documentation, visit the [VortexKit Docs](https://github.com/daftscientist/VortexKit/wiki).
