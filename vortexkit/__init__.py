@@ -3,3 +3,4 @@ from .responses import FileResponse, PlainTextResponse, HtmlResponse, JSONRespon
 from .request import Request
 from .enums import StatusCode
 from .middleware import Middleware
+from .objects import Route

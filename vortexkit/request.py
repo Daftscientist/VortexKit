@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import json
+import threading
 from urllib.parse import parse_qs
 import cgi
 import xml.etree.ElementTree as ET
@@ -35,6 +36,8 @@ class Request:
     server_protocol: str = None
     server_software: str = None
 
+    context = threading.local()
+
     def __dict__(self):
         return {
             "app": self.app.__json__(),
@@ -54,7 +57,8 @@ class Request:
             "server_name": self.server_name,
             "server_port": self.server_port,
             "server_protocol": self.server_protocol,
-            "server_software": self.server_software
+            "server_software": self.server_software,
+            "context": self.context.__dict__
         }
 
     def __repr__(self):

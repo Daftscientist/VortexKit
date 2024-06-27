@@ -29,6 +29,16 @@ class App(object):
 
         self.middleware.append(middleware)
 
+    def register_class(self, cls: any) -> None:
+        """
+            Registers a class to the app.
+
+            Args:
+                cls (any): The class to be registered.
+        """
+
+        self.add_route("/", cls.__call__)
+
     def serve_static(self, path: str, folder: str) -> None:
         """
             Serves static files from a specified folder.
@@ -40,6 +50,23 @@ class App(object):
         for file in os.listdir(folder):
             if os.path.isfile(os.path.join(folder, file)):
                 self._routes[f"{path}/{file}"] = [lambda file=file: FileResponse(os.path.join(folder, file)), True]
+
+    def websocket(self, path: str) -> None:
+        """
+            A decorator that creates a new websocket route.
+
+            Args:
+                path (str): The path of the websocket route.
+        """
+
+        def inner(func, *args, **kwargs):
+            if not path.startswith("/") and not path == "*":
+                raise ValueError("Path must start with a /")
+            if self._routes.get(path):
+                raise ValueError("Route already exists")
+            self._routes[path] = [func]
+            return func
+        return inner
 
     def route(self, path: str) -> None:
         """
