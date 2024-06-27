@@ -47,6 +47,7 @@ python app.py
 #### Handling Different Content Types
 
 VortexKit can handle various content types including JSON, XML, and multipart form data.
+View more examples in the [Examples Folder](/examples/)
 
 ```python
 from vortexkit import App, JSONResponse, Request
