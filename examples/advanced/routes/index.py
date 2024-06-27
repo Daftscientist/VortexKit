@@ -1,7 +1,7 @@
 
-from vortexkit.enums import StatusCode
-from vortexkit import Request
-from vortexkit.responses import PlainTextResponse
+from ....vortexkit.enums import StatusCode
+from ....vortexkit import Request
+from ....vortexkit.responses import PlainTextResponse
 
 
 def index_route(request: Request):

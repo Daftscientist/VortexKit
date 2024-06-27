@@ -1,4 +1,4 @@
-from vortexkit import Request, JSONResponse, StatusCode, Route
+from ....vortexkitvortexkit import Request, JSONResponse, StatusCode, Route
 from dishookr import InteractionResponse, InteractionResponseType, InteractionCallbackMessage
 
 class DiscordCallback(Route):

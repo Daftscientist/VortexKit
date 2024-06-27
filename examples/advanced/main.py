@@ -5,7 +5,10 @@ from routes.discord_callback import DiscordCallback
 
 app = App()
 
-app.add_route("/", index_route)
+app.add_route(
+    "/", index_route
+)
+
 app.register_class(
     DiscordCallback()
 )

@@ -1,4 +1,4 @@
-from vortexkit import Middleware, Request, JSONResponse, StatusCode
+from ...vortexkit import Middleware, Request, JSONResponse, StatusCode
 import requests
 import urllib.parse
 
