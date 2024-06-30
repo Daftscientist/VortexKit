@@ -10,7 +10,10 @@ Welcome to WhirlWind's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   introduction
+   installation
+   usage
+   api_reference
 
 Indices and tables
 ==================
