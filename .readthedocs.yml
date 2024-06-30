@@ -7,5 +7,4 @@ python:
 # Documentation settings
 sphinx:
   configuration: source/conf.py  # Path to your Sphinx configuration file
-  build:
-    image: latest  # Specify a Docker image for building the documentation (optional)
+  builder: html  # Specify the builder type (e.g., html, dirhtml, etc.)
