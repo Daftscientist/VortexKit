@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'WhirlWind'
+project = 'vortexkit'
 copyright = '2024, Leo Johnston'
 author = 'Leo Johnston'
 release = '0.1.5'
