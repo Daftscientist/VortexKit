@@ -1,0 +1,11 @@
+version: 2
+
+# Optionally specify the Python interpreter version
+python:
+  version: 3.9
+
+# Documentation settings
+sphinx:
+  configuration: source/conf.py  # Path to your Sphinx configuration file
+  build:
+    image: latest  # Specify a Docker image for building the documentation (optional)
