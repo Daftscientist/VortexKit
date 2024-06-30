@@ -1,10 +1,11 @@
 version: 2
 
-# Optionally specify the Python interpreter version
+build:
+  os: "ubuntu-20.04"
+
 python:
   version: 3.9
 
-# Documentation settings
 sphinx:
-  configuration: source/conf.py  # Path to your Sphinx configuration file
-  builder: html  # Specify the builder type (e.g., html, dirhtml, etc.)
+  configuration: source/conf.py
+  builder: html
