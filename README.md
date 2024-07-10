@@ -54,8 +54,10 @@ from vortexkit import App, JSONResponse, Request
 
 app = App()
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload')
 def upload(req: Request):
+    if req.method.upper() is not 'POST':
+        return JSONResponse({"error": "Unsupported method"}, status="400 Bad Request")
     if req.content_type.startswith('multipart/form-data'):
         file_data = req.body.get('file')
         return JSONResponse({"filename": file_data.filename, "content": file_data.file.read().decode()})
